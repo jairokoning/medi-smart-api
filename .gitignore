@@ -1,3 +1,5 @@
 node_modules
-.vscode
+uploads
 checklist.md
+.env
+.vscode
