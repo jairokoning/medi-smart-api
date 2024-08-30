@@ -13,15 +13,15 @@ export class ExpressAdapter implements HttpServer {
   constructor() {
     this.app = express();
     this.app.use(express.json());
-    this.app.use(bodyParser.json({ limit: '150mb' }))
+    // this.app.use(bodyParser.json({ limit: '150mb' }))
     this.app.use(bodyParser.urlencoded({ limit: '150mb', extended: true }));
-    this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+    // this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
   }
 
   register(method: string, url: string, callback: Function): void {
     this.app[method](url.replace(/\{|\}/g, ""), async (req: any, res: any) => {
       try {
-        const output = await callback(req.params, req.body);
+        const output = await callback(req.params, req.query, req.body);
         res.json(output);
       } catch (e: any) {
         res.status(422).json({

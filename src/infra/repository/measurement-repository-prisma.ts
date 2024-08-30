@@ -1,4 +1,4 @@
-import MeasurementRepository from "../../application/repository/measurement-repository";
+import MeasurementRepository, { ListMeasures } from "../../application/repository/measurement-repository";
 import Measurement from "../../domain/entity/measurement";
 import PrismaORM from "../orm/prisma-orm";
 
@@ -53,5 +53,28 @@ export default class MeasurementRepositoryPrisma implements MeasurementRepositor
         measure_value: measurement.getMeasureValue().getValue()
       }
     })
+  }
+
+  async listCustomerMeasurements(customer_code: string, measure_type?: "WATER" | "GAS" | undefined): Promise<ListMeasures | undefined> {
+    const filter = {
+      customer_code,
+      ...(measure_type && { measure_type })
+    };
+    console.log(filter)
+    const measurementsData = await this.prisma.measurement.findMany({
+      where: filter,
+      select: {
+        measure_uuid: true,
+        measure_datetime: true,
+        measure_type: true,
+        has_confirmed: true,
+        image_url: true
+      }
+    })
+    if (measurementsData.length === 0) return;
+    return {
+      customer_code,
+      measures: measurementsData
+    }
   }
 }
