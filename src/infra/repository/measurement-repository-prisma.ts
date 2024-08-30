@@ -4,7 +4,6 @@ import PrismaORM from "../orm/prisma-orm";
 
 export default class MeasurementRepositoryPrisma implements MeasurementRepository {
   constructor(readonly prisma: PrismaORM) {}
-
   async saveMeasurement(measurement: Measurement): Promise<void> {
     await this.prisma.measurement.create({
       data: {
@@ -32,5 +31,27 @@ export default class MeasurementRepositoryPrisma implements MeasurementRepositor
     })
     if (!measurementData) return;
     return new Measurement(measurementData.measure_uuid, measurementData.customer_code, measurementData.measure_datetime, measurementData.measure_type, measurementData.has_confirmed, measurementData.measure_value, measurementData.image_url);
+  }
+
+  async getMeasurementByUuid(measure_uuid: string): Promise<Measurement | undefined> {
+    const measurementData = await this.prisma.measurement.findUnique({
+      where: {
+        measure_uuid
+      }
+    })
+    if (!measurementData) return;
+    return new Measurement(measurementData.measure_uuid, measurementData.customer_code, measurementData.measure_datetime, measurementData.measure_type, measurementData.has_confirmed, measurementData.measure_value, measurementData.image_url);
+  }
+
+  async confirmMeasurement(measurement: Measurement): Promise<void> {
+    await this.prisma.measurement.update({
+      where: {
+        measure_uuid: measurement.measure_uuid
+      },
+      data: {
+        has_confirmed: measurement.has_confirmed,
+        measure_value: measurement.getMeasureValue().getValue()
+      }
+    })
   }
 }

@@ -52,4 +52,16 @@ export default class Measurement {
   getImageUrl() {
     return this.image_url;
   }
+
+  confirm() {
+    Measurement.setConfirmed(this);
+  }
+
+  static setConfirmed(measurement: Measurement) {
+    (measurement as any).has_confirmed = true;
+  }
+
+  confirmMeasurementValue(measure_value: number) {
+    this.measure_value = new MeasureValue(measure_value);
+  }
 }
