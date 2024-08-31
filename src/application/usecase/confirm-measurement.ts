@@ -5,8 +5,8 @@ export default class ConfirmMeasurement {
 
   async execute(input: Input): Promise<Output> {
     const measurement = await this.measurementRepository.getMeasurementByUuid(input.measure_uuid);
-    if (!measurement) throw new Error("Measurement not found");
-    if (measurement.has_confirmed) throw new Error("Measurement already confirmed");
+    if (!measurement) throw new Error("Leitura não encontrada");
+    if (measurement.has_confirmed) throw new Error("Leitura já confirmada");
     measurement.confirm();
     measurement.confirmMeasurementValue(input.confirmed_value);
     await this.measurementRepository.confirmMeasurement(measurement);

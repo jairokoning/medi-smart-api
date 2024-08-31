@@ -60,7 +60,6 @@ export default class MeasurementRepositoryPrisma implements MeasurementRepositor
       customer_code,
       ...(measure_type && { measure_type })
     };
-    console.log(filter)
     const measurementsData = await this.prisma.measurement.findMany({
       where: filter,
       select: {

@@ -6,7 +6,7 @@ POST http://localhost:80/upload
 Content-Type: application/x-www-form-urlencoded
 Accept: application/json
 
-customer_code=3&measure_datetime=2024-08-01 14:47:03&measure_type=GAS&image={{image}}
+customer_code=10&measure_datetime=2024-08-01 14:47:03&measure_type=GAS&image={{image}}
 
 ###
 
@@ -14,13 +14,13 @@ PATCH http://localhost:80/confirm HTTP/1.1
 Content-Type: application/json
 
 {
-  "measure_uuid": "53e6b2f3-12b7-4220-b6f6-5a355e91ef5d",
+  "measure_uuid": "53e6b2f3-12b7-4220-b6f6-5a355e91ef5dX",
   "confirmed_value": 451122
 }
 
 ###
 
-GET http://localhost:80/1/list? HTTP/1.1
+GET http://localhost:80/10/list?measure_type=asdfsdf HTTP/1.1
 Content-Type: application/json
 
 # ?measure_type=WATER

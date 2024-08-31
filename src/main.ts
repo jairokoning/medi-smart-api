@@ -16,6 +16,6 @@ import ListMeasurements from "./application/usecase/list-customer-measurements";
   const listMeasurements = new ListMeasurements(measurementRepository);
   const httpServer = new ExpressAdapter();
   new MeasurementController(httpServer, createMeasurement, confirmMeasurement, listMeasurements);
-  httpServer.listen(3000);
+  httpServer.listen(80);
 })();
 

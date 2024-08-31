@@ -2,7 +2,7 @@ export default class MeasureDatetime {
   private value: Date;
 
   constructor(measure_datetime: Date) {
-    if (!this.isValidDateTime(measure_datetime)) throw new Error("Invalid measure datetime");
+    if (!this.isValidDateTime(measure_datetime)) throw new Error("Data de leitura invalida");
     this.value = measure_datetime;
   }
 

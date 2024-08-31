@@ -11,8 +11,6 @@ export default class MeasurementController {
     readonly listMeasurements: ListMeasurements
   ) {
     httpServer.register("post", "/upload", async (params: any, query: any, body: any) => {
-      console.log(params)
-      console.log(body)
       const response = await createMeasurement.execute(body);
       return response;
     });
@@ -23,9 +21,6 @@ export default class MeasurementController {
     });
 
     httpServer.register("get", "/:{customer_code}/list", async (params: any, query: any, body: any) => {
-      console.log(params)
-      //console.log(query)
-      console.log(body)
       const response = await listMeasurements.execute({ customer_code: params.customer_code, measure_type: query.measure_type });
       return response;
     });

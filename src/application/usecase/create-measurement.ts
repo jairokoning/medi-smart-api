@@ -13,7 +13,7 @@ export default class CreateMeasurement {
     const { start, end } = upload.getMonthRange();
     const existingMeasureData = await this.measurementRepository
       .getMeasurementByCustomerAndDateRangeAndType(upload.getCustomerCode(), start, end, upload.getMeasureType());
-    if (existingMeasureData) throw new Error("Measurement already exists for this month and type");
+    if (existingMeasureData) throw new Error("Leitura do mês já realizada");
     const llmResponse = await this.llmGateway.uploadImage(upload.getImage());
     if (llmResponse.status === "FAILED") {
       if (llmResponse.error?.message) throw new Error(llmResponse.error.message);
