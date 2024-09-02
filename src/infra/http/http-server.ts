@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
+import path from "path";
+import cors from 'cors';
 
 export default interface HttpServer {
   register(method: string, url: string, callback: Function): void;
@@ -12,9 +14,10 @@ export class ExpressAdapter implements HttpServer {
   constructor() {
     this.app = express();
     this.app.use(express.json());
+    this.app.use(cors({ origin: '*' }));
     // this.app.use(bodyParser.json({ limit: '150mb' }))
     this.app.use(bodyParser.urlencoded({ limit: '150mb', extended: true }));
-    // this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+    this.app.use('/uploads', express.static(path.join(__dirname, '..', '..', '..', 'uploads')));
   }
 
   register(method: string, url: string, callback: Function): void {
