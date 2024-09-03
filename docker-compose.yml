@@ -1,20 +1,29 @@
 services:
   app:
     build: .
+    user: "1000:1000"
     ports:
       - 80:80
     volumes:
       - .:/home/node/app
-      - ./uploads:/home/node/app/uploads
-    command: sh -c "yarn install && npx prisma migrate dev --name init && npx prisma migrate deploy && yarn dev"
+    command: sh -c "yarn install && npx prisma generate && npx prisma migrate deploy && yarn dev"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+        restart: true
+    restart: always
 
   postgres:
     image: postgres:14.3-alpine
+    restart: always
     environment:
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: app
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U docker -d app" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
